@@ -1,4 +1,5 @@
 ﻿using LoginLogoutExample.Filter;
+using LoginLogoutExample.Hubs;
 using LoginLogoutExample.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -17,6 +18,8 @@ namespace LoginLogoutExample
             {
                 options.Filters.Add(new AuthenticationFilter());
             });
+            builder.Services.AddSignalR();
+
             // IHttpContextAccessor: IHttpContextAccessor is an interface in ASP.NET Core that provides access to the current HttpContext. The HttpContext contains information about the current request, response, and other contextual information.
 
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -44,7 +47,10 @@ namespace LoginLogoutExample
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<EditorHub>("/editHub");
+            });
             app.Run();
         }
     }

@@ -17,7 +17,10 @@ namespace LoginLogoutExample.Controllers
 
             return View();
         }
-
+        public IActionResult EditView()
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();
