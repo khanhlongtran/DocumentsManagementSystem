@@ -1,5 +1,4 @@
-﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
-
+﻿@model LoginLogoutExample.Models.Document;
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,42 +7,52 @@
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
     <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha256-2Kok7MbOyxpkg/4hF+8ATFh9UC0D6abA/ZbHNF3k75T4="
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
             crossorigin="anonymous"></script>
-    <style>
-        /* increase height of ckeditor*/
-        .ck-editor__editable_inline {
-            min-height: 500px;
-            min-width: 500px;
-        }
-    </style>
 
 </head>
 <body>
 
-    <form asp-controller="#" asp-action="#" method="post">
-        <table>
-            <tr>
-                <td>File Name: </td>
-                <td><input name="name" type="text" /></td>
-            </tr>
-            <tr>
-                <td>Content:</td>
-                <td><textarea name="editTextArea" id="editTextArea"></textarea></td>
-            </tr>
-            <tr>
-                <td colspan="2"><input id="Submit1" type="Submit" value="Submit" /></td>
-            </tr>
-        </table>
+    <form asp-controller="Home" asp-action="EditView" method="post">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="name">File Name:</label>
+                        <input name="FileName" type="text" class="form-control" value="@Model.FileName" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="editTextArea">Content:</label>
+                        <textarea name="FileContent" id="editTextArea" class="form-control" rows="8">@Model.FileContent</textarea>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" value="@Model.FileId" name="FileId" />
+            <div class="row">
+                <div class="col-md-6">
+                    <input id="Submit1" type="Submit" class="btn btn-primary" value="Save" />
+                </div>
+            </div>
+        </div>
     </form>
+
+
     <script>
         const connection = new signalR.HubConnectionBuilder()
             .withUrl("/editHub")
             .build();
 
+        //connection.on("ReceiveTextUpdate", (newText) => {
+        //    document.getElementById("editTextArea").value = newText;
+        //});
         connection.on("ReceiveTextUpdate", (newText) => {
             document.getElementById("editTextArea").value = newText;
         });
+
 
         connection.start().catch(err => console.error(err));
 
@@ -60,24 +69,8 @@
             // document.getElementById("editTextArea").value = newText;
         });
     </script>
-    @section Scripts {
-        <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
-        <script>
-            $(document).ready(function () {
-                // ckeditor 5 initialization
-                ClassicEditor
-                    .create(document.getElementById('editTextArea'))
-                    .then(editor => {
-                        // Set default value
-                        editor.setData('Default text goes here.');
 
-                        console.log(editor);
-                    })
-                    .catch(error => {
-                        console.error(error);
-                    });
-            });
-        </script>
-    }
+    <!-- ... (remaining code) ... -->
+
 </body>
 </html>

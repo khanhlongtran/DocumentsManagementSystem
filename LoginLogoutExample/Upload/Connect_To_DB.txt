@@ -1,0 +1,26 @@
+hihixxx
+--- B1: T?o file appsettings.json (Nh? ch?nh s?a Properties -> Copy if newer)
+
++ Chu?t ph?i vào Project -> Add -> New Item -> search "JavaScript JSON Configuration File" -> d?i tên thành "appsettings.json"
+
++ S?a trong file "appsettings.json":
+{
+  "ConnectionStrings": {
+    "MyDatabase": "Server=Tên server c?a b?n;uid=sa;pwd=123456;database=Tên database c?a b?n;TrustServerCertificate=True;Encryption=False;"
+  }
+}
+
++ Chu?t ph?i vào file "appsettings.json" -> Properties -> Copy to Output Directory : "Copy if newer"// Always Copy
+
+--- B2: Ch?n "Open in Terminal" -> Ch?y câu l?nh:
+dotnet ef dbcontext scaffold "Server=LAPTOP-GVNBRE21;uid=sa;pwd=123456;database=13_NguyenQuangSu_MyStore;TrustServerCertificate=True;” Microsoft.EntityFrameworkCore.SqlServer --output-dir Models
+
+--- B3: Vào file Models -> ch?n file cu?i cùng ...Context.cs -> Ch?nh s?a hàm OnConfiguring
+
+Console.WriteLine(Directory.GetCurrentDirectory());
+                IConfiguration config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", true, true)
+                .Build();
+                var strConn = config["ConnectionStrings:MyDatabase"];
+                optionsBuilder.UseSqlServer(strConn);

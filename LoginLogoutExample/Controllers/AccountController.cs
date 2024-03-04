@@ -37,7 +37,7 @@ namespace LoginLogoutExample.Controllers
                 }
                 else
                 {
-                    HttpContext.Session.SetString("userId", userDetails.Name);
+                    HttpContext.Session.SetString("userId", userDetails.Id.ToString());
                 }
             }
             else
